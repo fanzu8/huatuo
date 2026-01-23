@@ -18,7 +18,7 @@ $ sh build/build-run-testing-image.sh
 
 **1. 准备编译环境**
 ```bash
-$ docker build --network host -t huatuo/huatuo-bamai-dev:latest -f ./Dockerfile.devel .
+$ docker build --target devel --network host -t huatuo/huatuo-bamai-dev:latest -f ./Dockerfile .
 ```
 
 **2. 启动编译容器** 
@@ -55,5 +55,5 @@ $ make
 通过 docker build 方式能够快速的发布，最新二进制容器镜像。
 
 ```bash
-docker build --network host -t huatuo/huatuo-bamai:latest .
+docker build --target run --network host -t huatuo/huatuo-bamai:latest -f ./Dockerfile .
 ```
