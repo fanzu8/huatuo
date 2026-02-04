@@ -33,6 +33,7 @@ function print_sys_info() {
 	crictl version || true
 
 	kubectl get pods -A || true
+    crictl images || true
 	systemctl status kubelet || true
 	ps -ef | grep kubelet | grep -v grep || true
 
