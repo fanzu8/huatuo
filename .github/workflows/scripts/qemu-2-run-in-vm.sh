@@ -5,6 +5,29 @@ ARCH=${1:-amd64}
 OS_DISTRO=${2:-ubuntu24.04}
 GOLANG_VERSION="1.24.0"
 
+COMMAMND_DEPS=(
+	"go"
+	"jq"
+	"kubectl"
+	"curl"
+	"wget"
+	"git"
+	"make"
+	"clang"
+)
+
+function check_command_deps() {
+	local ok=1
+	for cmd in "${COMMAMND_DEPS[@]}"; do
+		if ! command -v "$cmd" &>/dev/null; then
+			echo "⚠️ $cmd not found"
+			ok=0
+		fi
+	done
+
+	[ $ok -eq 1 ] || exit 1
+}
+
 function print_sys_info() {
 	# sys info
 	uname -a
@@ -33,7 +56,7 @@ function print_sys_info() {
 	crictl version || true
 
 	kubectl get pods -A || true
-    crictl images || true
+	crictl images || true
 	systemctl status kubelet || true
 	ps -ef | grep kubelet | grep -v grep || true
 
@@ -57,18 +80,19 @@ function install_golang() {
 function prapre_test_env() {
 	case $OS_DISTRO in
 	ubuntu*)
-		apt update
-		apt install make libbpf-dev clang git -y
+		apt update >/dev/null
+		apt install make libbpf-dev clang git jq -y >/dev/null
 		;;
 	esac
 
-	go install github.com/vektra/mockery/v2@latest && which mockery
+	go install github.com/vektra/mockery/v2@latest >/dev/null && which mockery
 	git config --global --add safe.directory /mnt/host
 }
 
 print_sys_info
 install_golang
 prapre_test_env
+check_command_deps
 
 cd /mnt/host && pwd
 ls -alh /mnt/host

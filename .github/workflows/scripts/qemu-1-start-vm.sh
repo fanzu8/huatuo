@@ -61,13 +61,13 @@ growpart:
 EOF
 
 	if [ $LOCAL_VALIDATE -eq 1 ]; then
-	tee -a ${CLOUD_USER_DATA} >/dev/null <<EOF
+		tee -a ${CLOUD_USER_DATA} >/dev/null <<EOF
 runcmd:
   - mkdir -p /mnt/host
   - echo "hostshare /mnt/host 9p trans=virtio,version=9p2000.L,access=any,_netdev 0 0" >> /etc/fstab
   - mount -a
 EOF
-    fi
+	fi
 
 	touch "$CLOUD_META_DATA"
 
@@ -110,12 +110,12 @@ function install_vm() {
 	echo -e "install vm ${VM_NAME} from qcow2 [${LIBVIRT_IMAGE_DIR}/${OS_IMAGE}], resize to ${VM_DISK_SIZE}"
 
 	# install vm
-    VIRT_LOCAL_ARG=()
+	VIRT_LOCAL_ARG=()
 	if [ $LOCAL_VALIDATE -eq 1 ]; then
-        VIRT_LOCAL_ARG=(
-            --filesystem source="$(pwd)",target=hostshare,type=mount,accessmode=passthrough
-        )
-    fi
+		VIRT_LOCAL_ARG=(
+			--filesystem source="$(pwd)",target=hostshare,type=mount,accessmode=passthrough
+		)
+	fi
 
 	VIRT_COMMON_ARG=(
 		--name "${VM_NAME}"
@@ -131,7 +131,7 @@ function install_vm() {
 	VIRT_X86_64_ARG=(
 		"${VIRT_COMMON_ARG[@]}"
 		--cloud-init user-data=${CLOUD_USER_DATA}
-        "${VIRT_LOCAL_ARG[@]}"
+		"${VIRT_LOCAL_ARG[@]}"
 	)
 	VIRT_ARM64_ARG=(
 		"${VIRT_COMMON_ARG[@]}"
@@ -140,9 +140,9 @@ function install_vm() {
 		# --cpu cortex-a57
 		--disk path="${CLOUD_INIT_ISO}",device=cdrom
 		--boot loader=/usr/share/AAVMF/AAVMF_CODE.fd,loader.readonly=yes,loader.type=pflash,nvram.template=/usr/share/AAVMF/AAVMF_VARS.fd
-        "${VIRT_LOCAL_ARG[@]}"
+		"${VIRT_LOCAL_ARG[@]}"
 	)
-    
+
 	case "$ARCH" in
 	amd64)
 		echo -e "🧩 [amd64] sudo virt-install ${VIRT_X86_64_ARG[@]}"

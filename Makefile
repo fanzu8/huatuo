@@ -65,7 +65,7 @@ mock-build:
 
 integration: all mock-build
 	# @bash integration/integration.sh
-	@bash integration/e2e-node.sh
+	@bash integration/e2e-node-test.sh
 
 force:;
 
