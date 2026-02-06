@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+export TEST_LOG_TAG="E2E TEST"
+
 source ./test/env.sh
 source ./test/utils.sh
 source ./test/common/k8s.sh
@@ -50,7 +52,7 @@ test_huatuo_bamai_metrics() {
 test_huatuo_bamai_default_container_exists() {
 	log_info "⬅️ test huatuo-bamai default container exists"
 
-    assert_kubelet_pod_count \
+	assert_kubelet_pod_count \
 		"${BUSINESS_POD_NS}" \
 		"${BUSINESS_DEFAULT_POD_NAME_REGEX}" \
 		"${BUSINESS_DEFAULT_POD_COUNT}" \
@@ -61,7 +63,7 @@ test_huatuo_bamai_default_container_exists() {
 		"${BUSINESS_DEFAULT_POD_COUNT}" \
 		"default pod exists in huatuo-bamai"
 
-    log_info "✅ test huatuo-bamai default container exists ok"
+	log_info "✅ test huatuo-bamai default container exists ok"
 }
 
 test_huatuo_bamai_e2e_container_create() {
@@ -100,7 +102,7 @@ test_huatuo_bamai_e2e_container_create() {
 		"${BUSINESS_E2E_TEST_POD_COUNT}" \
 		"huatuo-bamai e2e pods created"
 
-    log_info "✅ test huatuo-bamai e2e container create ok"
+	log_info "✅ test huatuo-bamai e2e container create ok"
 }
 
 test_huatuo_bamai_e2e_container_delete() {
@@ -130,5 +132,5 @@ test_huatuo_bamai_e2e_container_delete() {
 		"0" \
 		"huatuo-bamai e2e pods deleted"
 
-    log_info "✅ test huatuo-bamai e2e container delete ok"
+	log_info "✅ test huatuo-bamai e2e container delete ok"
 }

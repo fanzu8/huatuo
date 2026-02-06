@@ -7,7 +7,7 @@ huatuo_bamai_start() {
 	local args=("$@")
 	[[ -x "${HUATUO_BAMAI_BIN}" ]] || fatal "huatuo-bamai binary not found: ${HUATUO_BAMAI_BIN}"
 
-	log_info "Starting huatuo-bamai: ${args[*]}"
+	log_info "starting huatuo-bamai: ${args[*]}"
 	${HUATUO_BAMAI_BIN} "${args[@]}" >${HUATUO_BAMAI_TEST_TMPDIR}/huatuo.log 2>&1 &
 	HUATUO_BAMAI_PID=$!
 
@@ -22,7 +22,7 @@ huatuo_bamai_ready() {
 
 huatuo_bamai_stop() {
 	if [[ -n "${HUATUO_BAMAI_PID}" ]]; then
-		log_info "Stopping huatuo-bamai (pid=${HUATUO_BAMAI_PID})"
+		log_info "stopping huatuo-bamai (pid=${HUATUO_BAMAI_PID})"
 		kill "${HUATUO_BAMAI_PID}" || true
 		wait "${HUATUO_BAMAI_PID}" || true
 	fi

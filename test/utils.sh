@@ -1,12 +1,24 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-log_info() { echo "[TEST] $*"; }
-log_warn() { echo "[TEST][WARN] $*" >&2; }
-log_error() { echo "[TEST][ERROR] $*" >&2; }
+log_prefix() {
+	echo "[${TEST_LOG_TAG}]"
+}
+
+log_info() {
+	echo "$(log_prefix) $*"
+}
+
+log_warn() {
+	echo "$(log_prefix)[WARN] $*" >&2
+}
+
+log_error() {
+	echo "$(log_prefix)[ERROR] $*" >&2
+}
 
 fatal() {
-	log_error "$*"
+	echo "$(log_prefix)[FAIL] $*" >&2
 	exit 1
 }
 
@@ -18,6 +30,10 @@ assert_eq() {
 wait_until() {
 	local timeout=$1 interval=$2 desc=$3
 	shift 3
+
+	if [[ "$1" == *" "* ]]; then
+		fatal "❌ wait_until expects function or command, got shell string: \"$1\""
+	fi
 
 	local end=$(($(date +%s) + timeout))
 	local ret

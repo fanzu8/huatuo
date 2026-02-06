@@ -6,10 +6,10 @@ ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/.."
 HUATUO_BAMAI_BIN="${ROOT_DIR}/_output/bin/huatuo-bamai"
 HUATUO_BAMAI_TEST_TMPDIR=$(mktemp -d /tmp/huatuo-test.XXXXXX)
 HUATUO_BAMAI_MATCH_KEYWORDS="\"error\"|panic"
-HUATUO_BAMAI_TEST_FIXTURES="${ROOT_DIR}/integration/fixtures"
-HUATUO_BAMAI_TEST_EXPECTED="${ROOT_DIR}/integration/fixtures/expected_metrics"
+HUATUO_BAMAI_TEST_FIXTURES="${ROOT_DIR}/test/fixtures"
+HUATUO_BAMAI_TEST_EXPECTED="${ROOT_DIR}/test/fixtures/expected_metrics"
 HUATUO_BAMAI_ARGS_INTEGRATION=(
-	"--config-dir" "${ROOT_DIR}/_output/conf/"
+	"--config-dir" "${HUATUO_BAMAI_TEST_TMPDIR}"
 	"--config" "bamai.conf"
 	"--region" "dev"
 	"--procfs-prefix" "${HUATUO_BAMAI_TEST_FIXTURES}"
@@ -26,8 +26,8 @@ HUATUO_BAMAI_ARGS_E2E=(
 HUATUO_BAMAI_ADDR="http://127.0.0.1:19704"
 HUATUO_BAMAI_METRICS_API="${HUATUO_BAMAI_ADDR}/metrics"
 HUATUO_BAMAI_PODS_API="${HUATUO_BAMAI_ADDR}/containers/json"
-WAIT_HUATUO_BAMAI_TIMEOUT=60  # second
-WAIT_HUATUO_BAMAI_INTERVAL=1 # second
+WAIT_HUATUO_BAMAI_TIMEOUT=120 # second
+WAIT_HUATUO_BAMAI_INTERVAL=2  # second
 
 # k8s: metadata.name == pod-name, ct-hostname
 # huatuo-bamai: name == ct-hostname, hostname == pod-name == metadata.name

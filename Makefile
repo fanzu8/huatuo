@@ -64,8 +64,8 @@ mock-build:
 	@go generate -run "mockery.*" -x ./...
 
 integration: all mock-build
-	# @bash integration/integration.sh
-	@bash integration/e2e-node-test.sh
+	@bash test/integration.sh
+	@bash test/e2e.sh
 
 force:;
 
