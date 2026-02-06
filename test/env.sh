@@ -19,9 +19,8 @@ HUATUO_BAMAI_ARGS_INTEGRATION=(
 HUATUO_BAMAI_ARGS_E2E=(
 	"--config-dir" "${ROOT_DIR}/_output/conf/"
 	"--config" "huatuo-bamai.conf"
-	"--region" "e2e-node"
+	"--region" "e2e"
 	"--disable-storage"
-	"--disable-kubelet" # TODO
 )
 HUATUO_BAMAI_ADDR="http://127.0.0.1:19704"
 HUATUO_BAMAI_METRICS_API="${HUATUO_BAMAI_ADDR}/metrics"

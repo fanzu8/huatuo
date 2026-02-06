@@ -8,7 +8,8 @@ unshare --uts --mount bash -c '
 	hostname huatuo-dev 2>/dev/null || true
 
 	set -xeuo pipefail
-	source "./test/integration.lib.sh"
+    source ./test/env.sh
+	source "${ROOT_DIR}/test/integration.lib.sh"
 
 	# Always cleanup the tests.
 	trap "integration_test_teardown \$?" EXIT

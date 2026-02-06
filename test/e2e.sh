@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-source ./test/e2e.lib.sh
+source "./test/env.sh"
+source "${ROOT_DIR}/test/e2e.lib.sh"
 
-trap '
-    huatuo_bamai_stop
-    huatuo_bamai_log_check
-' EXIT
+trap "
+    e2e_test_teardown
+" EXIT
 
 huatuo_bamai_start "${HUATUO_BAMAI_ARGS_E2E[@]}"
 test_huatuo_bamai_metrics

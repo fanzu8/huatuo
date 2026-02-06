@@ -3,11 +3,17 @@ set -euo pipefail
 
 export TEST_LOG_TAG="INTEGRATION TEST"
 
-source ./test/env.sh
-source ./test/utils.sh
-source ./test/common/huatuo-bamai.sh
+source "${ROOT_DIR}/test/env.sh"
+source "${ROOT_DIR}/test/utils.sh"
+source "${ROOT_DIR}/test/common/huatuo-bamai.sh"
 
-# Start the huatuo-bamai service used for integration testing.
+integration_test_huatuo_bamai_config() {
+	cat >"${HUATUO_BAMAI_TEST_TMPDIR}/bamai.conf" <<'EOF'
+# the blacklist for tracing and metrics
+BlackList = ["softlockup", "ethtool", "netstat_hw", "iolatency", "memory_free", "memory_reclaim", "reschedipi", "softirq"]
+EOF
+}
+
 integration_test_huatuo_bamai_start() {
 	[[ -x ${HUATUO_BAMAI_BIN} ]] || fatal "❌ binary not found: ${HUATUO_BAMAI_BIN}"
 	[[ -d ${HUATUO_BAMAI_TEST_EXPECTED} ]] || fatal "❌ expected metrics directory not found: ${HUATUO_BAMAI_TEST_EXPECTED}"
@@ -45,12 +51,6 @@ Key files:
 =========================================================
 "
 	fi
-}
-
-test_huatuo_bamai_metrics() {
-	wait_and_fetch_metrics
-	check_procfs_metrics
-	# ...
 }
 
 fetch_huatuo_bamai_metrics() {
@@ -95,9 +95,8 @@ check_metrics_from_file() {
 	exit 1
 }
 
-integration_test_huatuo_bamai_config() {
-	cat >"${HUATUO_BAMAI_TEST_TMPDIR}/bamai.conf" <<'EOF'
-# the blacklist for tracing and metrics
-BlackList = ["softlockup", "ethtool", "netstat_hw", "iolatency", "memory_free", "memory_reclaim", "reschedipi", "softirq"]
-EOF
+test_huatuo_bamai_metrics() {
+	wait_and_fetch_metrics
+	check_procfs_metrics
+	# ...
 }

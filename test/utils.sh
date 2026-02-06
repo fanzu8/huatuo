@@ -24,22 +24,33 @@ fatal() {
 
 assert_eq() {
 	local actual=$1 expect=$2 msg=${3:-""}
-	[[ "$actual" == "$expect" ]] || log_info "assert failed: ${msg} actual=${actual}, expect=${expect}"
+	if [[ "$actual" == "$expect" ]]; then
+		return 0
+	fi
+
+	log_info "assert_eq: ${msg} actual=${actual}, expect=${expect}"
+	return 1
 }
 
+# wait_until <timeout> <interval> <description> <function> [args...]
+# Example:
+# wait_until 10 1 "check ready" my_check_func "arg1" "arg2"
 wait_until() {
 	local timeout=$1 interval=$2 desc=$3
 	shift 3
+	local func=$1
+	shift
 
-	if [[ "$1" == *" "* ]]; then
-		fatal "❌ wait_until expects function or command, got shell string: \"$1\""
+	if ! declare -f "$func" >/dev/null 2>&1; then
+		fatal "❌ wait_until expects function or command: \"$func\""
 	fi
 
 	local end=$(($(date +%s) + timeout))
-	local ret
-
+	local attempt=0
 	while (($(date +%s) < end)); do
-		if "$@"; then
+		attempt=$((attempt + 1))
+		log_info "wait attempt #${attempt}: ${desc}"
+		if "$func" "$@"; then
 			return 0
 		fi
 		sleep "$interval"
