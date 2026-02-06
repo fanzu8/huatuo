@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-export TEST_LOG_TAG="INTEGRATION TEST"
-
 source "${ROOT_DIR}/test/env.sh"
 source "${ROOT_DIR}/test/utils.sh"
 source "${ROOT_DIR}/test/common/huatuo-bamai.sh"

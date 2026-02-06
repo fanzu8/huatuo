@@ -67,6 +67,12 @@ test: all mock-build
 	@bash test/integration.sh
 	@bash test/e2e.sh
 
+integration: all mock-build
+	@bash test/integration.sh
+
+e2e: all mock-build
+	@bash test/e2e.sh
+
 force:;
 
 .PHONY: all bpf-build mock-build sync build check imports fmt golangci-lint vendor clean integration force docker-build docker-clean

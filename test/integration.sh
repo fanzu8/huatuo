@@ -7,7 +7,7 @@ unshare --uts --mount bash -c '
 	echo "huatuo-dev" > /proc/sys/kernel/hostname
 	hostname huatuo-dev 2>/dev/null || true
 
-	set -xeuo pipefail
+	set -euo pipefail
     source ./test/env.sh
 	source "${ROOT_DIR}/test/integration/lib.sh"
     source "${ROOT_DIR}/test/integration/metrics.sh"
