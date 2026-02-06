@@ -6,8 +6,8 @@ ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/.."
 HUATUO_BAMAI_BIN="${ROOT_DIR}/_output/bin/huatuo-bamai"
 HUATUO_BAMAI_TEST_TMPDIR=$(mktemp -d /tmp/huatuo-test.XXXXXX)
 HUATUO_BAMAI_MATCH_KEYWORDS="\"error\"|panic"
-HUATUO_BAMAI_TEST_FIXTURES="${ROOT_DIR}/test/fixtures"
-HUATUO_BAMAI_TEST_EXPECTED="${ROOT_DIR}/test/fixtures/expected_metrics"
+HUATUO_BAMAI_TEST_FIXTURES="${ROOT_DIR}/test/integration/fixtures"
+HUATUO_BAMAI_TEST_EXPECTED="${ROOT_DIR}/test/integration/fixtures/expected_metrics"
 HUATUO_BAMAI_ARGS_INTEGRATION=(
 	"--config-dir" "${HUATUO_BAMAI_TEST_TMPDIR}"
 	"--config" "bamai.conf"
