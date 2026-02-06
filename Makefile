@@ -63,7 +63,7 @@ clean:
 mock-build:
 	@go generate -run "mockery.*" -x ./...
 
-integration: all mock-build
+test: all mock-build
 	@bash test/integration.sh
 	@bash test/e2e.sh
 
