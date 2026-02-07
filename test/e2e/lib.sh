@@ -4,9 +4,9 @@ set -euo pipefail
 export TEST_LOG_TAG="E2E TEST"
 
 source ${ROOT_DIR}/test/env.sh
-source ${ROOT_DIR}/test/utils.sh
-source ${ROOT_DIR}/test/common/kubelet.sh
+source ${ROOT_DIR}/test/common/utils.sh
 source ${ROOT_DIR}/test/common/huatuo-bamai.sh
+source ${ROOT_DIR}/test/e2e/common/kubelet.sh
 
 assert_kubelet_pod_count() {
 	local ns=$1 regex=$2 expect=$3 desc=${4:-"kubelet pod count"}

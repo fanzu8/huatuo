@@ -64,14 +64,14 @@ mock-build:
 	@go generate -run "mockery.*" -x ./...
 
 test: all mock-build
-	@bash test/integration.sh
-	@bash test/e2e.sh
+	@bash test/integration/run.sh
+	@bash test/e2e/run.sh
 
 integration: all mock-build
-	@bash test/integration.sh
+	@bash test/integration/run.sh
 
-e2e: all mock-build
-	@bash test/e2e.sh
+e2e: all
+	@bash test/e2e/run.sh
 
 force:;
 

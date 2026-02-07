@@ -2,9 +2,10 @@
 set -euo pipefail
 
 source "./test/env.sh"
+source "${ROOT_DIR}/test/common/utils.sh"
 source "${ROOT_DIR}/test/e2e/lib.sh"
-source "${ROOT_DIR}/test/e2e/container.sh"
-source "${ROOT_DIR}/test/e2e/metrics.sh"
+source "${ROOT_DIR}/test/e2e/cases/container.sh"
+source "${ROOT_DIR}/test/e2e/cases/metrics.sh"
 
 trap "
     e2e_test_teardown

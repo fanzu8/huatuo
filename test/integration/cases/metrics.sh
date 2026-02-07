@@ -2,7 +2,7 @@
 set -euo pipefail
 
 source "${ROOT_DIR}/test/env.sh"
-source "${ROOT_DIR}/test/utils.sh"
+source "${ROOT_DIR}/test/common/utils.sh"
 source "${ROOT_DIR}/test/common/huatuo-bamai.sh"
 source "${ROOT_DIR}/test/integration/lib.sh"
 

@@ -2,10 +2,10 @@
 set -euo pipefail
 
 source ${ROOT_DIR}/test/env.sh
-source ${ROOT_DIR}/test/utils.sh
-source ${ROOT_DIR}/test/common/k8s.sh
-source ${ROOT_DIR}/test/common/kubelet.sh
+source ${ROOT_DIR}/test/common/utils.sh
 source ${ROOT_DIR}/test/common/huatuo-bamai.sh
+source ${ROOT_DIR}/test/e2e/common/k8s.sh
+source ${ROOT_DIR}/test/e2e/common/kubelet.sh
 
 test_huatuo_bamai_default_container_exists() {
 	log_info "⬅️ test huatuo-bamai default container exists"

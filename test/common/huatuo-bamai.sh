@@ -16,6 +16,8 @@ huatuo_bamai_start() {
 }
 
 huatuo_bamai_ready() {
+	# pid check, maybe process already exited
+	kill -0 "${HUATUO_BAMAI_PID}" 2>/dev/null || fatal "huatuo-bamai not running (pid=${HUATUO_BAMAI_PID})"
 	# healthz
 	curl -sf "${CURL_TIMEOUT[@]}" "${HUATUO_BAMAI_METRICS_API}" >/dev/null
 }

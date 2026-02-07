@@ -10,7 +10,7 @@ unshare --uts --mount bash -c '
 	set -euo pipefail
     source ./test/env.sh
 	source "${ROOT_DIR}/test/integration/lib.sh"
-    source "${ROOT_DIR}/test/integration/metrics.sh"
+    source "${ROOT_DIR}/test/integration/cases/metrics.sh"
 
 	# Always cleanup the tests.
 	trap "integration_test_teardown \$?" EXIT
