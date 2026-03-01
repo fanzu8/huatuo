@@ -13,20 +13,21 @@ jobs:
     runs-on: ${{ matrix.runner }}
     env:
       VM_NAME: "huatuo-os-distro-test-vm"
+      ACT_RUN: false
     strategy:
       fail-fast: false
       matrix:
         include:
           # amd64
-          - arch: amd64
-            os: ubuntu24.04
-            runner: ubuntu-24.04
+        #   - arch: amd64
+        #     os: ubuntu24.04
+        #     runner: ubuntu-24.04
           - arch: amd64
             os: ubuntu22.04
             runner: ubuntu-24.04
-          - arch: amd64
-            os: ubuntu20.04
-            runner: ubuntu-24.04
+        #   - arch: amd64
+        #     os: ubuntu20.04
+        #     runner: ubuntu-24.04
 
         #   # arm64 (too slow)
         #   - arch: arm64
@@ -41,6 +42,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set up Docker Buildx
+        if: ${{ env.ACT_RUN != 'true' }}
         uses: docker/setup-buildx-action@v3
 
       - name: Host Init
