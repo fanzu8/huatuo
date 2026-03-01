@@ -12,22 +12,30 @@ jobs:
     name: Test in VM (${{ matrix.arch }} ${{ matrix.os }})
     runs-on: ${{ matrix.runner }}
     env:
-      VM_NAME: "huatuo-os-distro-test-vm"
       ACT_RUN: false
     strategy:
       fail-fast: false
       matrix:
         include:
-          # amd64
+        #   # amd64
         #   - arch: amd64
         #     os: ubuntu24.04
         #     runner: ubuntu-24.04
+        #     vm_name: "huatuo-os-distro-test-vm-ubuntu24.04"
+        #     vm_mac: "4A:6F:6C:69:6E:20"
+        #     vm_ip: "192.168.122.100"
           - arch: amd64
             os: ubuntu22.04
             runner: ubuntu-24.04
+            vm_name: "huatuo-os-distro-test-vm-ubuntu22.04"
+            vm_mac: "4A:6F:6C:69:6E:21"
+            vm_ip: "192.168.122.101"
         #   - arch: amd64
         #     os: ubuntu20.04
         #     runner: ubuntu-24.04
+        #     vm_name: "huatuo-os-distro-test-vm-ubuntu20.04"
+        #     vm_mac: "4A:6F:6C:69:6E:22"
+        #     vm_ip: "192.168.122.102"
 
         #   # arm64 (too slow)
         #   - arch: arm64
@@ -52,7 +60,7 @@ jobs:
       - name: Start VM
         timeout-minutes: 30
         run: |
-          .github/workflows/scripts/qemu-1-start-vm.sh ${{ matrix.arch }} ${{ matrix.os }} ${VM_NAME}
+          .github/workflows/scripts/qemu-1-start-vm.sh ${{ matrix.arch }} ${{ matrix.os }} ${{ matrix.vm_name }} ${{ matrix.vm_mac }} ${{ matrix.vm_ip }}
 
       - name: Run in VM
         timeout-minutes: 120
@@ -61,5 +69,10 @@ jobs:
           -i ${HOME}/.ssh/id_ed25519_vm \
           -o StrictHostKeyChecking=no \
           -o UserKnownHostsFile=/dev/null \
-          root@${VM_NAME} "bash -s -- ${{ matrix.arch }} ${{ matrix.os }}" \
+          root@${{ matrix.vm_ip }} "bash -s -- ${{ matrix.arch }} ${{ matrix.os }}" \
           < .github/workflows/scripts/qemu-2-run-in-vm.sh
+
+      - name: Cleanup VM
+        if: always()
+        run: |
+          .github/workflows/scripts/qemu-3-cleanup.sh ${{ matrix.vm_name }} ${{ matrix.vm_mac }} ${{ matrix.vm_ip }}

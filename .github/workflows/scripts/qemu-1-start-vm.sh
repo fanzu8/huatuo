@@ -4,8 +4,8 @@ set -euo pipefail
 ARCH=${1:-"amd64"}
 OS_DISTRO=${2:-"ubuntu24.04"}
 VM_NAME=${3:-"huatuo-os-distro-test-vm"}
-VM_MAC="4A:6F:6C:69:6E:2E"
-VM_IP="192.168.122.100"
+VM_MAC=${4:-"4A:6F:6C:69:6E:2E"}
+VM_IP=${5:-"192.168.122.100"}
 VM_VCPUS=4
 VM_MEMORY_MB=$((16 * 1024))
 VM_DISK_SIZE="20G"
