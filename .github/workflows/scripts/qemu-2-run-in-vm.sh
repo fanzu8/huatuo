@@ -68,7 +68,7 @@ function print_sys_info() {
 }
 
 function install_golang() {
-	local GOLANG_URL="https://go.dev/dl/go$GOLANG_VERSION.linux-$ARCH.tar.gz"
+    local GOLANG_URL="https://mirrors.aliyun.com/golang/go$GOLANG_VERSION.linux-$ARCH.tar.gz"
 	local GOLANG_TAR="go$GOLANG_VERSION.linux-$ARCH.tar.gz"
 
 	wget -q -O "$GOLANG_TAR" "$GOLANG_URL"

@@ -17,25 +17,25 @@ jobs:
       fail-fast: false
       matrix:
         include:
-        #   # amd64
-        #   - arch: amd64
-        #     os: ubuntu24.04
-        #     runner: ubuntu-24.04
-        #     vm_name: "huatuo-os-distro-test-vm-ubuntu24.04"
-        #     vm_mac: "4A:6F:6C:69:6E:20"
-        #     vm_ip: "192.168.122.100"
+          # amd64
+          - arch: amd64
+            os: ubuntu24.04
+            runner: ubuntu-24.04
+            vm_name: "huatuo-os-distro-test-vm-ubuntu24.04"
+            vm_mac: "4A:6F:6C:69:6E:20"
+            vm_ip: "192.168.122.100"
           - arch: amd64
             os: ubuntu22.04
             runner: ubuntu-24.04
             vm_name: "huatuo-os-distro-test-vm-ubuntu22.04"
             vm_mac: "4A:6F:6C:69:6E:21"
             vm_ip: "192.168.122.101"
-        #   - arch: amd64
-        #     os: ubuntu20.04
-        #     runner: ubuntu-24.04
-        #     vm_name: "huatuo-os-distro-test-vm-ubuntu20.04"
-        #     vm_mac: "4A:6F:6C:69:6E:22"
-        #     vm_ip: "192.168.122.102"
+          - arch: amd64
+            os: ubuntu20.04
+            runner: ubuntu-24.04
+            vm_name: "huatuo-os-distro-test-vm-ubuntu20.04"
+            vm_mac: "4A:6F:6C:69:6E:22"
+            vm_ip: "192.168.122.102"
 
         #   # arm64 (too slow)
         #   - arch: arm64
@@ -73,6 +73,6 @@ jobs:
           < .github/workflows/scripts/qemu-2-run-in-vm.sh
 
       - name: Cleanup VM
-        if: always()
+        if: success()
         run: |
           .github/workflows/scripts/qemu-3-cleanup.sh ${{ matrix.vm_name }} ${{ matrix.vm_mac }} ${{ matrix.vm_ip }}

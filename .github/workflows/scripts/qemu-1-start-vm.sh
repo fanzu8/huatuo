@@ -173,6 +173,45 @@ function wait_for_vm_ready() {
 	echo -e "❌ vm ${VM_NAME} is not ready after ${timeout}s" && exit 1
 }
 
+# default qcow2 image k8s bind IP to curr IP, because maybe not match
+function adapt_ip_to_k8s() {
+	ssh "${SSH_OPTS[@]}" "root@${VM_IP}" bash -s <<'EOF'
+    set -euo pipefail
+
+    CURR_IP=$(ip -o -4 addr show | awk '!/ lo / {print $4; exit}' | cut -d/ -f1)
+    [[ -n "$CURR_IP" ]] || { ip -4 addr show && echo "CURR_IP empty"; exit 1; }
+    APISERVER_MANIFEST="/etc/kubernetes/manifests/kube-apiserver.yaml"
+    DEFAULT_IP=$(grep -oP '(?<=--advertise-address=)[0-9.]+' "$APISERVER_MANIFEST" | head -1)
+    [[ -n "$DEFAULT_IP" ]] || { cat "$APISERVER_MANIFEST" && echo "DEFAULT_IP empty"; exit 1; }
+
+    if [[ "$CURR_IP" == "$DEFAULT_IP" ]]; then
+        echo -e "k8s already using correct IP[$CURR_IP], nothing to change."
+        exit 0
+    fi
+    echo -e "⬅️ k8s using IP[$DEFAULT_IP], adapt to curr IP[$CURR_IP]..."
+
+    # k8s
+    sed -i "s/${DEFAULT_IP}/${CURR_IP}/g" /etc/kubernetes/manifests/etcd.yaml
+    sed -i "s/${DEFAULT_IP}/${CURR_IP}/g" /etc/kubernetes/manifests/kube-apiserver.yaml
+
+    rm -f /etc/kubernetes/admin.conf
+    rm -f /etc/kubernetes/pki/apiserver.crt
+    rm -f /etc/kubernetes/pki/apiserver.key
+    kubeadm init phase certs apiserver --apiserver-advertise-address "$CURR_IP"
+    kubeadm init phase kubeconfig all --apiserver-advertise-address "$CURR_IP"
+    mkdir -p "$HOME/.kube" && cp /etc/kubernetes/admin.conf "$HOME/.kube/config"
+
+    # kubelet
+    systemctl stop kubelet
+    rm -rf /var/lib/kubelet/pki
+    rm -f /etc/kubernetes/kubelet.conf
+    kubeadm init phase kubeconfig kubelet --apiserver-advertise-address "$CURR_IP"
+    systemctl daemon-reload
+    systemctl restart kubelet
+    systemctl restart containerd
+EOF
+}
+
 function wait_for_k8s_ready() {
 	local timeout=120 # seconds
 	local interval=2  # seconds
@@ -236,6 +275,7 @@ echo -e "✅ vm ${VM_NAME} is installed"
 
 wait_for_vm_ready
 echo -e "✅ VM ${OS_DISTRO} ${VM_NAME} is ready."
+adapt_ip_to_k8s
 wait_for_k8s_ready
 echo -e "✅ k8s is ready."
 
